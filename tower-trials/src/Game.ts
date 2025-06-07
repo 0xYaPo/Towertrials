@@ -10,6 +10,9 @@ export class Game {
   cameraY = 0;
   gameOver = false;
   win = false;
+isOver(): boolean {
+  return this.gameOver || this.win;
+}
 
   constructor(public canvas: HTMLCanvasElement, public ctx: CanvasRenderingContext2D) {
     this.platforms = PlatformGenerator.generate(LEVEL_HEIGHT, canvas.width);
