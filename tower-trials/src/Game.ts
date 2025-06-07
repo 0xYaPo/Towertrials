@@ -17,18 +17,19 @@ export class Game {
   enemies: Beaver[] = [];
 
 
-  constructor(public canvas: HTMLCanvasElement, public ctx: CanvasRenderingContext2D) {
+  constructor(public canvas: HTMLCanvasElement, public ctx: CanvasRenderingContext2D, public: difficulty: 'easy' | 'hard') {
     this.platforms = PlatformGenerator.generate(3000, canvas.width);
     const startPlatform = this.platforms[this.platforms.length - 2];
     this.player = new Player(startPlatform.x + 10, startPlatform.y - 32);
     this.maxClimbY = this.player.y;
+    this.enemySpeed = this.difficulty === 'hard' ? 2 : 1;
+    
     // Add 3 beavers on random platforms (excluding top/bottom)
 const usablePlatforms = this.platforms.filter(p => !p.isGoal && p.y < 2900 && p.y > 200);
 for (let i = 0; i < 3; i++) {
   const p = usablePlatforms[Math.floor(Math.random() * usablePlatforms.length)];
   this.enemies.push(new Beaver(p.x + 20, p.y - 32, p.x + p.width));
 }
-
   }
 
   update() {
