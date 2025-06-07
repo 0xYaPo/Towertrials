@@ -1,4 +1,4 @@
-import { Platform } from './Platform';
+import { Platform } from "./Platform";
 
 export class Player {
   width = 32;
@@ -23,7 +23,6 @@ export class Player {
 
   update(platforms: Platform[]) {
     this.vx = 0;
-
     if (this.keys['ArrowLeft']) this.vx = -this.speed;
     if (this.keys['ArrowRight']) this.vx = this.speed;
     if (this.keys['Space'] && this.grounded) {
@@ -32,7 +31,6 @@ export class Player {
     }
 
     this.vy += this.gravity;
-
     this.x += this.vx;
     this.y += this.vy;
 
@@ -52,8 +50,8 @@ export class Player {
     }
   }
 
-  render(ctx: CanvasRenderingContext2D) {
-    ctx.fillStyle = '#00ff00';
-    ctx.fillRect(this.x, this.y, this.width, this.height);
+  render(ctx: CanvasRenderingContext2D, cameraY: number) {
+    ctx.fillStyle = "#00ff00";
+    ctx.fillRect(this.x, this.y - cameraY, this.width, this.height);
   }
 }
