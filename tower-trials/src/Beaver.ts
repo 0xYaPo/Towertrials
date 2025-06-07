@@ -1,8 +1,23 @@
 export class Beaver {
-  width = 32;
-  height = 32;
-  vx: number = 1;
-  alive = true;
+  static sprite: HTMLImageElement;
+  static loadSprite() {
+    this.sprite = new Image();
+    this.sprite.src = 'assets/sprites/beaver.png';
+  }
+
+  ...
+  render(ctx: CanvasRenderingContext2D, cameraY: number) {
+    if (!this.alive) return;
+
+    if (Beaver.sprite?.complete) {
+      ctx.drawImage(Beaver.sprite, this.x, this.y - cameraY, this.width, this.height);
+    } else {
+      ctx.fillStyle = "#A0522D";
+      ctx.fillRect(this.x, this.y - cameraY, this.width, this.height);
+    }
+  }
+}
+
 
   constructor(
   public x: number,
@@ -21,13 +36,15 @@ export class Beaver {
     }
   }
 
-  render(ctx: CanvasRenderingContext2D, cameraY: number) {
+ render(ctx: CanvasRenderingContext2D, cameraY: number) {
     if (!this.alive) return;
-    ctx.fillStyle = "#A0522D";
-    ctx.fillRect(this.x, this.y - cameraY, this.width, this.height);
-    ctx.fillStyle = "white";
-    ctx.fillRect(this.x + 8, this.y - cameraY + 8, 5, 5);
-    ctx.fillRect(this.x + 18, this.y - cameraY + 8, 5, 5);
+
+    if (Beaver.sprite?.complete) {
+      ctx.drawImage(Beaver.sprite, this.x, this.y - cameraY, this.width, this.height);
+    } else {
+      ctx.fillStyle = "#A0522D";
+      ctx.fillRect(this.x, this.y - cameraY, this.width, this.height);
+    }
   }
 
   // General collision check
