@@ -47,10 +47,18 @@ for (let i = 0; i < 3; i++) {
     //Collision check
     for (const enemy of this.enemies) {
   enemy.update();
-  if (enemy.collidesWith(this.player.x, this.player.y, this.player.width, this.player.height)) {
+
+  if (!enemy.alive) continue;
+
+  if (enemy.wasStomped(this.player.x, this.player.y, this.player.width, this.player.height, this.player.vy)) {
+    enemy.alive = false;
+    this.player.vy = -8; // bounce up
+    this.score += 50;    // bonus score
+  } else if (enemy.collidesWith(this.player.x, this.player.y, this.player.width, this.player.height)) {
     this.gameOver = true;
   }
 }
+
 
     // Win detection
     for (const p of this.platforms) {
