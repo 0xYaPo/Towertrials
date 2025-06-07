@@ -1,9 +1,13 @@
 export class Platform {
-  x: number;
-  y: number;
+  constructor(
+    public x: number,
+    public y: number,
+    public width: number,
+    public height: number
+  ) {}
 
-  constructor(x: number, y: number) {
-    this.x = x;
-    this.y = y;
+  render(ctx: CanvasRenderingContext2D) {
+    ctx.fillStyle = '#888';
+    ctx.fillRect(this.x, this.y, this.width, this.height);
   }
 }
