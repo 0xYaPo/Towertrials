@@ -14,12 +14,21 @@ export class Game {
   win = false;
   score = 0;
   maxClimbY = 0;
+  enemies: Beaver[] = [];
+
 
   constructor(public canvas: HTMLCanvasElement, public ctx: CanvasRenderingContext2D) {
     this.platforms = PlatformGenerator.generate(3000, canvas.width);
     const startPlatform = this.platforms[this.platforms.length - 2];
     this.player = new Player(startPlatform.x + 10, startPlatform.y - 32);
     this.maxClimbY = this.player.y;
+    // Add 3 beavers on random platforms (excluding top/bottom)
+const usablePlatforms = this.platforms.filter(p => !p.isGoal && p.y < 2900 && p.y > 200);
+for (let i = 0; i < 3; i++) {
+  const p = usablePlatforms[Math.floor(Math.random() * usablePlatforms.length)];
+  this.enemies.push(new Beaver(p.x + 20, p.y - 32, p.x + p.width));
+}
+
   }
 
   update() {
@@ -35,6 +44,13 @@ export class Game {
       this.maxClimbY = this.player.y;
       this.score = Math.floor((this.platforms[this.platforms.length - 2].y - this.maxClimbY) / 10);
     }
+    //Collision check
+    for (const enemy of this.enemies) {
+  enemy.update();
+  if (enemy.collidesWith(this.player.x, this.player.y, this.player.width, this.player.height)) {
+    this.gameOver = true;
+  }
+}
 
     // Win detection
     for (const p of this.platforms) {
@@ -59,6 +75,10 @@ export class Game {
 
     this.platforms.forEach(p => p.render(this.ctx, this.cameraY));
     this.player.render(this.ctx, this.cameraY);
+
+    for (const enemy of this.enemies) {
+  enemy.render(this.ctx, this.cameraY);
+}
 
     // Score
     this.ctx.fillStyle = "#fff";
