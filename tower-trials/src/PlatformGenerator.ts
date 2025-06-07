@@ -11,11 +11,14 @@ export class PlatformGenerator {
       const width = 100 + Math.random() * 150;
       const x = Math.random() * (canvasWidth - width);
       platforms.push(new Platform(x, y, width, 20));
-      y -= 100 + Math.random() * 30; // Vary vertical spacing
+      y -= 100 + Math.random() * 30;
     }
 
-    // Ground/platform at the bottom
+    // Ground platform
     platforms.push(new Platform(0, levelHeight, canvasWidth, 50));
+
+    // Goal platform at top
+    platforms.push(new Platform(canvasWidth / 2 - 50, 0, 100, 20, true)); // goal flag set
 
     return platforms;
   }
