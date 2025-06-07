@@ -1,6 +1,8 @@
 import { Player } from "./Player";
 import { Platform } from "./Platform";
 import { PlatformGenerator } from "./PlatformGenerator";
+import { Beaver } from './Beaver';
+
 
 const LEVEL_HEIGHT = 3000;
 
