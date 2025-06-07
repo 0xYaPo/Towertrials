@@ -1,15 +1,32 @@
-import { Game } from './Game';
+import { Player } from './Player';
+import { Platform } from './Platform';
 
-const canvas = document.getElementById('game') as HTMLCanvasElement;
-const ctx = canvas.getContext('2d')!;
+export class Game {
+  player: Player;
+  platforms: Platform[] = [];
 
-const game = new Game(canvas, ctx);
+  constructor(public canvas: HTMLCanvasElement, public ctx: CanvasRenderingContext2D) {
+    this.player = new Player(100, 100);
 
-function loop() {
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
-  game.update();
-  game.render();
-  requestAnimationFrame(loop);
+    // Initial platform
+    this.platforms.push(new Platform(0, canvas.height - 50, canvas.width, 50));
+  }
+
+  update() {
+    this.player.update(this.platforms);
+  }
+
+  render() {
+    // Background
+    this.ctx.fillStyle = '#1e1e1e';
+    this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
+
+    // Platforms
+    for (const p of this.platforms) {
+      p.render(this.ctx);
+    }
+
+    // Player
+    this.player.render(this.ctx);
+  }
 }
-
-loop();
