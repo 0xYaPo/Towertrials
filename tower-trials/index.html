@@ -26,6 +26,37 @@
     z-index: 10;
   ">Restart</button>
 
+<button id="settingsBtn" style="
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  z-index: 20;
+">⚙️</button>
+
+<div id="settingsMenu" style="
+  display: none;
+  position: absolute;
+  top: 80px;
+  right: 10px;
+  background: #222;
+  color: white;
+  padding: 10px;
+  border: 1px solid #444;
+  font-family: monospace;
+  z-index: 15;
+">
+  <label>
+    Difficulty:
+    <select id="difficultySelect">
+      <option value="easy">Easy</option>
+      <option value="hard">Hard</option>
+    </select>
+  </label>
+  <br><br>
+  <button id="restartFromMenu">Restart</button>
+</div>
+
+  
   <script type="module" src="./src/main.ts"></script>
 </body>
   
