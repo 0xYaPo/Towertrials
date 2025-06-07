@@ -6,8 +6,8 @@ export class Platform {
     public height: number
   ) {}
 
-  render(ctx: CanvasRenderingContext2D) {
-    ctx.fillStyle = '#888';
-    ctx.fillRect(this.x, this.y, this.width, this.height);
+  render(ctx: CanvasRenderingContext2D, cameraY: number) {
+    ctx.fillStyle = "#888";
+    ctx.fillRect(this.x, this.y - cameraY, this.width, this.height);
   }
 }
