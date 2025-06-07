@@ -3,24 +3,27 @@ import { Game } from "./Game";
 const canvas = document.getElementById("game") as HTMLCanvasElement;
 const ctx = canvas.getContext("2d")!;
 const restartBtn = document.getElementById("restartBtn") as HTMLButtonElement;
+const settingsBtn = document.getElementById("settingsBtn")!;
+const settingsMenu = document.getElementById("settingsMenu")!;
+const difficultySelect = document.getElementById("difficultySelect") as HTMLSelectElement;
+const restartFromMenu = document.getElementById("restartFromMenu")!;
 
-let game = new Game(canvas, ctx);
+let difficulty: 'easy' | 'hard' = 'easy';
+let game = new Game(canvas, ctx, difficulty);
 
-restartBtn.onclick = () => {
-  game = new Game(canvas, ctx); // re-initialize
-  restartBtn.style.display = "none"; // hide button
-};
-
-function loop() {
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
-  game.update();
-  game.render();
-
-  if (game.isOver()) {
-    restartBtn.style.display = "block";
-  }
-
-  requestAnimationFrame(loop);
+function restartGame() {
+  game = new Game(canvas, ctx, difficulty);
+  restartBtn.style.display = "none";
+  settingsMenu.style.display = "none";
 }
 
-loop();
+restartBtn.onclick = restartGame;
+restartFromMenu.onclick = restartGame;
+
+settingsBtn.onclick = () => {
+  settingsMenu.style.display = settingsMenu.style.display === "none" ? "block" : "none";
+};
+
+difficultySelect.onchange = () => {
+  difficulty = difficultySelect.value as 'easy' | 'hard';
+};
