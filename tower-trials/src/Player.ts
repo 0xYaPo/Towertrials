@@ -1,15 +1,13 @@
 import { Platform } from "./Platform";
 
 export class Player {
-  width = 32;
-  height = 32;
-  x: number;
-  y: number;
-  vx = 0;
-  vy = 0;
-  speed = 3;
-  gravity = 0.5;
-  grounded = false;
+  static sprite: HTMLImageElement;
+
+  static loadSprite() {
+    this.sprite = new Image();
+    this.sprite.src = 'assets/sprites/player.png';
+  }
+
 
   private keys: Record<string, boolean> = {};
 
@@ -51,7 +49,11 @@ export class Player {
   }
 
   render(ctx: CanvasRenderingContext2D, cameraY: number) {
-    ctx.fillStyle = "#00ff00";
-    ctx.fillRect(this.x, this.y - cameraY, this.width, this.height);
+    if (Player.sprite?.complete) {
+      ctx.drawImage(Player.sprite, this.x, this.y - cameraY, this.width, this.height);
+    } else {
+      ctx.fillStyle = "#00ff00";
+      ctx.fillRect(this.x, this.y - cameraY, this.width, this.height);
+    }
   }
 }
