@@ -10,14 +10,14 @@ export class Game {
   cameraY = 0;
   gameOver = false;
   win = false;
-isOver(): boolean {
-  return this.gameOver || this.win;
-}
+  score = 0;
+  maxClimbY = 0;
 
   constructor(public canvas: HTMLCanvasElement, public ctx: CanvasRenderingContext2D) {
-    this.platforms = PlatformGenerator.generate(LEVEL_HEIGHT, canvas.width);
+    this.platforms = PlatformGenerator.generate(3000, canvas.width);
     const startPlatform = this.platforms[this.platforms.length - 2];
     this.player = new Player(startPlatform.x + 10, startPlatform.y - 32);
+    this.maxClimbY = this.player.y;
   }
 
   update() {
@@ -25,10 +25,16 @@ isOver(): boolean {
 
     this.player.update(this.platforms);
 
-    // Adjust camera position
+    // Update camera
     this.cameraY = Math.max(0, this.player.y - this.canvas.height / 2);
 
-    // Win condition
+    // Update score
+    if (this.player.y < this.maxClimbY) {
+      this.maxClimbY = this.player.y;
+      this.score = Math.floor((this.platforms[this.platforms.length - 2].y - this.maxClimbY) / 10);
+    }
+
+    // Win detection
     for (const p of this.platforms) {
       if (p.isGoal &&
           this.player.x + this.player.width > p.x &&
@@ -39,8 +45,8 @@ isOver(): boolean {
       }
     }
 
-    // Fall-death condition
-    if (this.player.y > LEVEL_HEIGHT + 100) {
+    // Fall death
+    if (this.player.y > 3100) {
       this.gameOver = true;
     }
   }
@@ -49,21 +55,23 @@ isOver(): boolean {
     this.ctx.fillStyle = "#1e1e1e";
     this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
 
-    // Platforms
-    for (const p of this.platforms) {
-      p.render(this.ctx, this.cameraY);
-    }
-
-    // Player
+    this.platforms.forEach(p => p.render(this.ctx, this.cameraY));
     this.player.render(this.ctx, this.cameraY);
 
-    // UI
+    // Score
     this.ctx.fillStyle = "#fff";
-    this.ctx.font = "20px monospace";
+    this.ctx.font = "18px monospace";
+    this.ctx.fillText(`Score: ${this.score}`, 20, 30);
+
     if (this.win) {
-      this.ctx.fillText("🎉 You reached the top! 🎉", 200, 50);
+      this.ctx.fillText("🎉 You reached the top! 🎉", 200, 60);
     } else if (this.gameOver) {
-      this.ctx.fillText("💀 You fell off the tower! 💀", 200, 50);
+      this.ctx.fillText("💀 You fell off the tower! 💀", 200, 60);
     }
   }
+
+  isOver(): boolean {
+    return this.win || this.gameOver;
+  }
 }
+
