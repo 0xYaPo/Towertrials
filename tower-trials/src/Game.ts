@@ -1,15 +1,17 @@
-import { Player } from './Player';
-import { Platform } from './Platform';
+import { Player } from "./Player";
+import { Platform } from "./Platform";
+import { PlatformGenerator } from "./PlatformGenerator";
+
+const LEVEL_HEIGHT = 600;
 
 export class Game {
   player: Player;
-  platforms: Platform[] = [];
+  platforms: Platform[];
 
   constructor(public canvas: HTMLCanvasElement, public ctx: CanvasRenderingContext2D) {
-    this.player = new Player(100, 100);
-
-    // Initial platform
-    this.platforms.push(new Platform(0, canvas.height - 50, canvas.width, 50));
+    this.platforms = PlatformGenerator.generate(LEVEL_HEIGHT, canvas.width);
+    const spawnPlatform = this.platforms[this.platforms.length - 2]; // near top
+    this.player = new Player(spawnPlatform.x + 10, spawnPlatform.y - 32);
   }
 
   update() {
@@ -17,16 +19,10 @@ export class Game {
   }
 
   render() {
-    // Background
-    this.ctx.fillStyle = '#1e1e1e';
+    this.ctx.fillStyle = "#1e1e1e";
     this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
 
-    // Platforms
-    for (const p of this.platforms) {
-      p.render(this.ctx);
-    }
-
-    // Player
+    this.platforms.forEach(p => p.render(this.ctx));
     this.player.render(this.ctx);
   }
 }
