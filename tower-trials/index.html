@@ -1,12 +1,19 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Towertrials</title>
+  <meta charset="UTF-8" />
+  <title>Tower Trials</title>
+  <style>
+    canvas {
+      background: #111;
+      display: block;
+      margin: 0 auto;
+      border: 1px solid #333;
+    }
+  </style>
 </head>
 <body>
-    <h1>Welcome to Towertrials</h1>
-    <script src="./dist/main.js"></script>
+  <canvas id="game" width="800" height="600"></canvas>
+  <script type="module" src="./src/main.ts"></script>
 </body>
 </html>
