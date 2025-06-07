@@ -8,7 +8,7 @@ export class Beaver {
   public x: number,
   public y: number,
   public patrolRightX: number,
-  public vx: number = 1
+  vx: number = 1
 ) {
   this.vx = vx;
 }
