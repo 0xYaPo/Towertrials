@@ -4,7 +4,14 @@ export class Beaver {
   vx: number = 1;
   alive = true;
 
-  constructor(public x: number, public y: number, public patrolRightX: number) {}
+  constructor(
+  public x: number,
+  public y: number,
+  public patrolRightX: number,
+  public vx: number = 1
+) {
+  this.vx = vx;
+}
 
   update() {
     if (!this.alive) return;
