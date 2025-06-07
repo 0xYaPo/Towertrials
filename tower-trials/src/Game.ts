@@ -19,6 +19,7 @@ export class Game {
   score = 0;
   maxClimbY = 0;
   enemies: Beaver[] = [];
+  enemySpeed: number;
 
 
   constructor(public canvas: HTMLCanvasElement, public ctx: CanvasRenderingContext2D, public difficulty: 'easy' | 'hard') {
@@ -32,7 +33,7 @@ export class Game {
 const usablePlatforms = this.platforms.filter(p => !p.isGoal && p.y < 2900 && p.y > 200);
 for (let i = 0; i < 3; i++) {
   const p = usablePlatforms[Math.floor(Math.random() * usablePlatforms.length)];
-  this.enemies.push(new Beaver(p.x + 20, p.y - 32, p.x + p.width));
+  this.enemies.push(new Beaver(p.x + 20, p.y - 32, p.x + p.width, this.enemySpeed));
 }
   }
 
@@ -60,14 +61,23 @@ for (let i = 0; i < 3; i++) {
     this.player.vy = -8; // bounce up
     this.score += 50;    // bonus score
   } else if (enemy.collidesWith(this.player.x, this.player.y, this.player.width, this.player.height)) {
-     this.state = 'dead';
+    this.state = 'dead';
   }
-}
+ }
+
+    for (const p of this.platforms) {
+      if (
+        p.isGoal &&
+        this.player.x + this.player.width > p.x &&
+        this.player.x < p.x + p.width &&
+        this.player.y + this.player.height > p.y &&
+        this.player.y < p.y + p.height
+      ) {
+        this.state = 'won';
+      }
+    }
 
 
-if (/* reached goal */) {
-    this.state = 'won';
-  }
 
   if (this.player.y > 3100) {
     this.state = 'dead';
@@ -100,5 +110,7 @@ drawCenterText(text: string, fontSize: number) {
   this.ctx.font = `${fontSize}px monospace`;
   const textWidth = this.ctx.measureText(text).width;
   this.ctx.fillText(text, (this.canvas.width - textWidth) / 2, this.canvas.height / 2);
+}
+
 }
 
