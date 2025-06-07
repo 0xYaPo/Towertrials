@@ -17,6 +17,18 @@ function restartGame() {
   settingsMenu.style.display = "none";
 }
 
+document.addEventListener("keydown", (e) => {
+  if (e.code === "Enter" && game.state === "start") {
+    game.state = "playing";
+  }
+
+  if (e.code === "KeyR" && (game.state === "dead" || game.state === "won")) {
+    game = new Game(canvas, ctx, difficulty);
+    game.state = "playing";
+    restartBtn.style.display = "none";
+  }
+});
+
 restartBtn.onclick = restartGame;
 restartFromMenu.onclick = restartGame;
 
