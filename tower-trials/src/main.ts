@@ -1,4 +1,9 @@
 import { Game } from "./Game";
+import { Player } from './Player';
+import { Beaver } from './Beaver';
+
+Player.loadSprite();
+Beaver.loadSprite(); 
 
 const canvas = document.getElementById("game") as HTMLCanvasElement;
 const ctx = canvas.getContext("2d")!;
