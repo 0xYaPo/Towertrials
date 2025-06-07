@@ -1,3 +1,6 @@
+type GameState = 'start' | 'playing' | 'won' | 'dead';
+
+
 import { Player } from "./Player";
 import { Platform } from "./Platform";
 import { PlatformGenerator } from "./PlatformGenerator";
@@ -9,6 +12,7 @@ const LEVEL_HEIGHT = 3000;
 export class Game {
   player: Player;
   platforms: Platform[];
+  state: GameState = 'start';
   cameraY = 0;
   gameOver = false;
   win = false;
@@ -33,7 +37,7 @@ for (let i = 0; i < 3; i++) {
   }
 
   update() {
-    if (this.gameOver || this.win) return;
+    if (this.state !== 'playing') return;
 
     this.player.update(this.platforms);
 
@@ -56,27 +60,19 @@ for (let i = 0; i < 3; i++) {
     this.player.vy = -8; // bounce up
     this.score += 50;    // bonus score
   } else if (enemy.collidesWith(this.player.x, this.player.y, this.player.width, this.player.height)) {
-    this.gameOver = true;
+     this.state = 'dead';
   }
 }
 
 
-    // Win detection
-    for (const p of this.platforms) {
-      if (p.isGoal &&
-          this.player.x + this.player.width > p.x &&
-          this.player.x < p.x + p.width &&
-          this.player.y + this.player.height > p.y &&
-          this.player.y < p.y + p.height) {
-        this.win = true;
-      }
-    }
-
-    // Fall death
-    if (this.player.y > 3100) {
-      this.gameOver = true;
-    }
+if (/* reached goal */) {
+    this.state = 'won';
   }
+
+  if (this.player.y > 3100) {
+    this.state = 'dead';
+  }
+}
 
   render() {
     this.ctx.fillStyle = "#1e1e1e";
