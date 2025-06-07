@@ -75,30 +75,30 @@ if (/* reached goal */) {
 }
 
   render() {
-    this.ctx.fillStyle = "#1e1e1e";
-    this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
+  this.ctx.fillStyle = "#1e1e1e";
+  this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
 
-    this.platforms.forEach(p => p.render(this.ctx, this.cameraY));
-    this.player.render(this.ctx, this.cameraY);
+  this.platforms.forEach(p => p.render(this.ctx, this.cameraY));
+  this.enemies.forEach(e => e.render(this.ctx, this.cameraY));
+  this.player.render(this.ctx, this.cameraY);
 
-    for (const enemy of this.enemies) {
-  enemy.render(this.ctx, this.cameraY);
+  this.ctx.fillStyle = "#fff";
+  this.ctx.font = "18px monospace";
+  this.ctx.fillText(`Score: ${this.score}`, 20, 30);
+
+  if (this.state === 'start') {
+    this.drawCenterText("Press ENTER to start", 32);
+  } else if (this.state === 'dead') {
+    this.drawCenterText("💀 You fell or got hit! Press R to restart", 32);
+  } else if (this.state === 'won') {
+    this.drawCenterText("🎉 You won! Press R to play again", 32);
+  }
 }
 
-    // Score
-    this.ctx.fillStyle = "#fff";
-    this.ctx.font = "18px monospace";
-    this.ctx.fillText(`Score: ${this.score}`, 20, 30);
-
-    if (this.win) {
-      this.ctx.fillText("🎉 You reached the top! 🎉", 200, 60);
-    } else if (this.gameOver) {
-      this.ctx.fillText("💀 You fell off the tower! 💀", 200, 60);
-    }
-  }
-
-  isOver(): boolean {
-    return this.win || this.gameOver;
-  }
+drawCenterText(text: string, fontSize: number) {
+  this.ctx.fillStyle = "#fff";
+  this.ctx.font = `${fontSize}px monospace`;
+  const textWidth = this.ctx.measureText(text).width;
+  this.ctx.fillText(text, (this.canvas.width - textWidth) / 2, this.canvas.height / 2);
 }
 
